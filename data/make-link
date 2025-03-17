@@ -1,0 +1,8 @@
+#!/bin/bash
+
+mkdir -p pdf
+find pdf -xtype l -delete
+for i in $(pwd)/articles /data/book/lib/articles
+do
+    find ${i} -type f -exec ln -snf '{}' pdf \;
+done

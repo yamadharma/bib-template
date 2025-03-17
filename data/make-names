@@ -1,0 +1,28 @@
+#!/bin/bash
+
+data_dir=/data/book/lib/
+input="names.txt"
+
+out_dir=pdf
+
+mkdir -p ${out_dir}
+find ${out_dir} -xtype l -delete
+
+while IFS="&" read -r from to
+do
+    [[ -z ${from} ]] && continue
+    
+    IFS=$'\n'
+    files=($(find "${data_dir}" -name "${from}*" | grep -v .stversions))
+    unset IFS
+
+    count="${#files[*]}"
+    let "count--"
+    for i in $(seq 0 $count)
+    do
+	filename="${files[$i]}"
+	suffix=$(echo "${filename##*/}" | sed -e "s/^$from//")
+	echo ${filename}
+	ln -snf "${filename}" ${out_dir}/"${to}${suffix}"
+    done
+done < "$input"

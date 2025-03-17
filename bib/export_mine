@@ -1,0 +1,4 @@
+#!/bin/bash
+
+bib2bib -oc mine -ob mine.bib -c 'keywords : "mine"' main.bib
+
